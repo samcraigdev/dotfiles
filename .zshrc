@@ -9,16 +9,17 @@ export GEOMETRY_STATUS_COLOR="red"
 export GEOMETRY_STATUS_COLOR_ROOT="red"
 export GEOMETRY_SEPARATOR=" "
 
-# --- Sources ---
-source $HOME/config/.zplug
-source $HOME/config/.aliases
-source $HOME/config/.functions
-source $HOME/config/.path
-
 # --- Env Variables ---
 export WDIR="/mnt/c"
 export WHOME="$WDIR/Users/conta"
 export KUBECONFIG="$(kind get kubeconfig-path --name="kind")"
+export DOT="$HOME/.dotfiles"
+
+# --- Sources ---
+source $DOT/.zplug
+source $DOT/.aliases
+source $DOT/.functions
+source $DOT/.path
 
 # --- Misc. ---
 cd ~
