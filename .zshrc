@@ -20,6 +20,7 @@ source $DOT/.zplug
 source $DOT/.aliases
 source $DOT/.functions
 source $DOT/.path
+source $DOT/.completion
 
 # --- Misc. ---
 cd ~

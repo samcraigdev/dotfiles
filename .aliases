@@ -1,11 +1,11 @@
-# lsd
+# --- lsd ---
 alias ls="lsd"
 alias lsa="lsd -a"
 alias lsl="lsd -l"
 alias lsla="lsd -la"
 alias lst="lsd --tree"
 
-# git
+# --- git ---
 alias g="git"
 alias ga="git add"
 alias gaa="git add --all"
@@ -15,8 +15,12 @@ alias gp="git push"
 alias gpu="git push -u"
 alias gb="git branch"
 alias gr="git remote -va"
+alias gs="git status"
 
 # --- kubectl ---
 alias kb="kubectl"
 alias kbci="kubectl cluster-info"
 alias kba="kubectl get all"
+
+# --- misc. ---
+alias kd="kind delete cluster && kind create cluster"
