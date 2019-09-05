@@ -5,24 +5,43 @@ declare -A builds
 builds[vs]="vayner-speakers"
 builds[c]="cauldron"
 builds[e]="echox"
+builds[cg]="cosmic-games-website"
+builds[csbp]="cosmic-sky-ban-panel"
 
 function bd() {
   # navigate to directory in ~/builds directory
   cd "$HOME/builds/${builds[$1]}"
 }
 
-function fix_docker() {
+function start-docker() {
+  sudo service docker start
+}
+
+function fix-docker() {
   sudo mkdir /sys/fs/cgroup/systemd	
   sudo mount -t cgroup -o none,name=systemd cgroup /sys/fs/cgroup/systemd
 }
 
-function fix_tiller() {
+function fix-tiller() {
   kubectl create serviceaccount --namespace kube-system tiller
   kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
   kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'      
   helm init --service-account tiller --upgrade
 }
 
-function fix_kind() {
-  kind delete cluster && kind create cluster
+function fix-kind() {
+  kind delete cluster
+  kind create cluster
+}
+
+function fix-file_watcher() {
+  echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+}
+
+function fix () {
+  start-docker
+  fix-kind
+  fix-docker
+  fix-tiller
+  fix-file_watcher
 }

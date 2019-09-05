@@ -21,6 +21,15 @@ alias gs="git status"
 alias kb="kubectl"
 alias kbci="kubectl cluster-info"
 alias kba="kubectl get all"
+alias kbrm="kubectl get pods --no-headers=true --all-namespaces |sed -r 's/(\S+)\s+(\S+).*/kubectl --namespace \1 delete pod \2/e'"
+
+# --- docker ---
+alias d="docker"
+alias drm="docker system prune -a -f"
+
+# --- psql ---
+alias pg-tw="psql -h 35.232.50.17 -U samcraig -d twitter"
 
 # --- misc. ---
 alias kd="kind delete cluster && kind create cluster"
+alias code="code-insiders"
