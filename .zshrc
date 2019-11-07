@@ -21,6 +21,7 @@ source $DOT/.aliases
 source $DOT/.functions
 source $DOT/.path
 source $DOT/.completion
+source $DOT/.setup
 
-# --- Misc. ---
+# --- Starting Directory  ---
 cd ~

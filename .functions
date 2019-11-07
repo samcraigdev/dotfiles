@@ -7,11 +7,14 @@ builds[c]="cauldron"
 builds[e]="echox"
 builds[cg]="cosmic-games-website"
 builds[csbp]="cosmic-sky-ban-panel"
+builds[se]="search-engine"
 
 function bd() {
   # navigate to directory in ~/builds directory
   cd "$HOME/builds/${builds[$1]}"
 }
+
+# --- fix ---
 
 function start-docker() {
   sudo service docker start
@@ -24,9 +27,10 @@ function fix-docker() {
 
 function fix-tiller() {
   kubectl create serviceaccount --namespace kube-system tiller
-  kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+  kubectl create clusterrolebinding tiller --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
   kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'      
   helm init --service-account tiller --upgrade
+  helm repo update
 }
 
 function fix-kind() {
@@ -45,3 +49,9 @@ function fix () {
   fix-tiller
   fix-file_watcher
 }
+
+# --- kubectl ---
+function kbrm() {
+  kubectl delete "$(kubectl api-resources --namespaced=true --verbs=delete -o name | tr "\n" "," | sed -e 's/,$//')" --all "$@"
+}
+
