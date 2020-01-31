@@ -8,10 +8,26 @@ builds[e]="echox"
 builds[cg]="cosmic-games-website"
 builds[csbp]="cosmic-sky-ban-panel"
 builds[se]="search-engine"
+builds[asdf]="asdf"
+
+function dir() {
+  # create path string for desired build directory
+  echo "$HOME/builds/${builds[$1]}"
+}  
 
 function bd() {
   # navigate to directory in ~/builds directory
-  cd "$HOME/builds/${builds[$1]}"
+  local directory="$(dir $1)"
+  
+  cd "$directory"
+}
+
+function ws() {
+  # open VS Code Insiders workspaces
+  local directory=$(dir $1)
+  
+  code "$directory/.vscode/${builds[$1]}.base.code-workspace"
+  code "$directory/.vscode/${builds[$1]}.work.code-workspace"
 }
 
 # --- fix ---
@@ -51,7 +67,9 @@ function fix () {
 }
 
 # --- kubectl ---
+
 function kbrm() {
   kubectl delete "$(kubectl api-resources --namespaced=true --verbs=delete -o name | tr "\n" "," | sed -e 's/,$//')" --all "$@"
 }
 
+# --- misc. ---

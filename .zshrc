@@ -19,7 +19,7 @@ export DOT="$HOME/.dotfiles"
 source $DOT/.zplug
 source $DOT/.aliases
 source $DOT/.functions
-source $DOT/.path
+source $DOT/.paths
 source $DOT/.completion
 source $DOT/.setup
 
