@@ -1,27 +1,44 @@
-# --- Theme ---
-export PROMPT_GEOMETRY_COLORIZE_ROOT=true
-export GEOMETRY_SYMBOL_ROOT="red"
-export GEOMETRY_COLOR_ROOT="green"
-export GEOMETRY_STATUS_SYMBOL="▲"
-export GEOMETRY_STATUS_SYMBOL_ERROR="△"
-export GEOMETRY_STATUS_COLOR_ERROR="red"
-export GEOMETRY_STATUS_COLOR="red"
-export GEOMETRY_STATUS_COLOR_ROOT="red"
-export GEOMETRY_SEPARATOR=" "
+#!/usr/bin/env bash
 
-# --- Env Variables ---
-export WDIR="/mnt/c"
-export WHOME="$WDIR/Users/conta"
-export KUBECONFIG="$(kind get kubeconfig-path --name="kind")"
-export DOT="$HOME/.dotfiles"
+export DOT=$HOME/dotfiles
+
+export ZPLUG=$DOT/.zplug
+export ALIASES=$DOT/.aliases
+export FUNCTIONS=$DOT/.functions
+export VARS=$DOT/.vars
+export SETUP=$DOT/.setup
+export THEME=$DOT/.theme
+export ASDF=$DOT/.asdf
+export GIT_CONFIG=$DOT/.gitconfig
+export TOOL_VERSIONS=$DOT/.tool-versions
+
+# --- Symlinks ---
+
+ln -sf $ZPLUG $HOME/.zplug
+ln -sf $ALIASES $HOME/.aliases
+ln -sf $FUNCTIONS $HOME/.functions
+ln -sf $VARS $HOME/.vars
+ln -sf $SETUP $HOME/.setup
+ln -sf $THEME $HOME/.theme
+
+ln -sf $GIT_CONFIG $HOME/.gitconfig
+ln -sf $TOOL_VERSIONS $HOME/.tool-versions
 
 # --- Sources ---
-source $DOT/.zplug
-source $DOT/.aliases
-source $DOT/.functions
-source $DOT/.paths
-source $DOT/.completion
-source $DOT/.setup
+
+source $ZPLUG
+source $ALIASES
+source $ASDF
+source $FUNCTIONS
+source $VARS
+source $SETUP
+source $THEME
+
+source $ASDF_COMPLETIONS
+
+# --- Temporary Node.js bin export fix ---
+
+export PATH=$PATH:$HOME/.asdf/.npm/bin
 
 # --- Starting Directory  ---
 cd ~

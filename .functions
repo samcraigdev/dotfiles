@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 declare -A builds
 
@@ -10,66 +10,74 @@ builds[csbp]="cosmic-sky-ban-panel"
 builds[se]="search-engine"
 builds[asdf]="asdf"
 
+workspaces=(base work config proto)
+
 function dir() {
   # create path string for desired build directory
-  echo "$HOME/builds/${builds[$1]}"
-}  
+	echo "$HOME/builds/$1"
+}
 
 function bd() {
-  # navigate to directory in ~/builds directory
-  local directory="$(dir $1)"
-  
-  cd "$directory"
+	# navigate to directory in ~/builds directory
+	local build=$builds[$1]
+	local directory="$(dir $build)"
+	
+	cd $directory
 }
 
 function ws() {
-  # open VS Code Insiders workspaces
-  local directory=$(dir $1)
-  
-  code "$directory/.vscode/${builds[$1]}.base.code-workspace"
-  code "$directory/.vscode/${builds[$1]}.work.code-workspace"
+	# open VS Code Insiders workspaces
+	local build=$builds[$1]
+	local directory=$(dir $build)
+	
+	for workspace in $workspaces[@]; do
+		code "$directory/.vscode/${build}.${workspace}.code-workspace"
+	done
 }
 
 # --- fix ---
 
 function start-docker() {
-  sudo service docker start
+	sudo service docker start
 }
 
 function fix-docker() {
-  sudo mkdir /sys/fs/cgroup/systemd	
-  sudo mount -t cgroup -o none,name=systemd cgroup /sys/fs/cgroup/systemd
+	sudo mkdir /sys/fs/cgroup/systemd
+	sudo mount -t cgroup -o none,name=systemd cgroup /sys/fs/cgroup/systemd
 }
 
 function fix-tiller() {
-  kubectl create serviceaccount --namespace kube-system tiller
-  kubectl create clusterrolebinding tiller --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
-  kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'      
-  helm init --service-account tiller --upgrade
-  helm repo update
+	kubectl create serviceaccount --namespace kube-system tiller
+	kubectl create clusterrolebinding tiller --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+	kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'
+	helm init --service-account tiller --upgrade
+	helm repo update
 }
 
 function fix-kind() {
-  kind delete cluster
-  kind create cluster
+	kind delete cluster
+	kind create cluster
 }
 
 function fix-file_watcher() {
-  echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+	echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+}
+
+function fix-wsl() {
+	echo "sync && echo 3 > /proc/sys/vm/drop_caches" | sudo sh
 }
 
 function fix () {
-  start-docker
-  fix-kind
-  fix-docker
-  fix-tiller
-  fix-file_watcher
+	start-docker
+	fix-kind
+	fix-docker
+	fix-tiller
+	fix-file_watcher
+	fix-wsl
 }
 
 # --- kubectl ---
 
 function kbrm() {
-  kubectl delete "$(kubectl api-resources --namespaced=true --verbs=delete -o name | tr "\n" "," | sed -e 's/,$//')" --all "$@"
+	kubectl delete "$(kubectl api-resources --namespaced=true --verbs=delete -o name | tr "\n" "," | sed -e 's/,$//')" --all "$@"
 }
-
-# --- misc. ---

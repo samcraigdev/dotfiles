@@ -1,9 +1,4 @@
-# --- lsd ---
-alias ls="lsd"
-alias lsa="lsd -a"
-alias lsl="lsd -l"
-alias lsla="lsd -la"
-alias lst="lsd --tree"
+#!/usr/bin/env bash
 
 # --- git ---
 alias g="git"
@@ -37,3 +32,4 @@ alias code="code-insiders"
 alias clip="clip.exe"
 alias gpg="gpg2"
 alias c="clear"
+alias wslrm=echo "sync && echo 3 > /proc/sys/vm/drop_caches" | sudo sh

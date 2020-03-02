@@ -1,3 +1,0 @@
-source $HOME/.asdf/completions/asdf.bash
-# sudo kind completion zsh > /usr/local/share/zsh/site-functions/_kind
-

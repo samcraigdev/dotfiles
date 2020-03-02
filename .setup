@@ -1,17 +1,19 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # --- gitmoji git commit hook ---
 gitmoji --init
 
-
-# --- GPG Agent ---
-# source $HOME/.dotfiles/lib/gpg.sh
-
 # --- SSH Agent ---
 eval $(ssh-agent -s) >/dev/null
+DEFAULT_SSH_KEY="$HOME/.ssh/sam.craig"
+# if [ -f $DEFAULT_SSH_KEY ]; then
+#	ssh-add $DEFAULT_SSH_KEY
+# else
+#	echo "Create a valid SSH key at: ${DEFAULT_SSH_KEY}"
+# fi
 
 # --- Broot Init ---
 source $HOME/.config/broot/launcher/bash/br
 
-# --- ASDF Init ---
-source $ASDF/asdf.sh;
+# --- kubetctl auto-completion
+source <(kubectl completion zsh)

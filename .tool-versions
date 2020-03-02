@@ -1,0 +1,14 @@
+golang 1.13.6
+skaffold system
+helm 3.1.1
+python 2.7.16
+nodejs 12.14.1
+postgres 12.1
+rust 1.41.0
+linkerd 2.6.1
+prototool 1.9.0
+jq 1.6
+step 0.13.3
+gcloud 280.0.0
+protoc 3.11.3
+bazel 2.1.1
